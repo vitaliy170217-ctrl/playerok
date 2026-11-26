@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Playerok — шаблоны товаров</title>
+<meta name="description" content="Настольное хранилище названий, описаний и комментариев к товарам Playerok с копированием в один клик.">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230f141b'/%3E%3Cpath d='M22 46V18h11a10 10 0 0 1 0 20h-4' fill='none' stroke='%233ddc97' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+</head>
+<body data-theme="night">
+
+<div class="backdrop" aria-hidden="true">
+  <div class="backdrop-photo" id="backdropPhoto"></div>
+  <div class="backdrop-shade" id="backdropShade"></div>
+  <div class="aurora aurora-a"></div>
+  <div class="aurora aurora-b"></div>
+  <div class="grain"></div>
+</div>
+
+<div class="app">
+
+  <header class="titlebar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 7h14M5 12h14M5 17h8"/>
+        </svg>
+      </span>
+      <div class="brand-text">
+        <strong>Playerok</strong>
+        <span>шаблоны товаров</span>
+      </div>
+    </div>
+
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
+      <input type="search" id="search" placeholder="Найти шаблон" aria-label="Найти шаблон" autocomplete="off">
+    </div>
+
+    <div class="bar-actions">
+      <button type="button" class="icon-btn" id="settingsBtn" title="Оформление и данные" aria-label="Оформление и данные">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.56V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.06-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.65 8.9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.56V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1Z"/></svg>
+      </button>
+      <button type="button" class="btn btn-primary" id="newBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Новый шаблон
+      </button>
+    </div>
+
+    <div class="win-controls" id="winControls" hidden>
+      <button type="button" class="win-btn" data-win="min" aria-label="Свернуть окно">
+        <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6h8" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>
+      </button>
+      <button type="button" class="win-btn" data-win="max" aria-label="Развернуть окно">
+        <svg viewBox="0 0 12 12" aria-hidden="true"><rect x="2.5" y="2.5" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>
+      </button>
+      <button type="button" class="win-btn win-close" data-win="close" aria-label="Закрыть приложение">
+        <svg viewBox="0 0 12 12" aria-hidden="true"><path d="m3 3 6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="content">
+    <div class="content-head">
+      <div>
+        <h1>Мои шаблоны <span class="count" id="countBadge">0</span></h1>
+        <p class="content-sub" id="contentSub">Нажмите на плитку, чтобы открыть шаблон и скопировать текст.</p>
+      </div>
+      <div class="segmented" id="sortBar" role="group" aria-label="Сортировка">
+        <button type="button" class="seg is-active" data-sort="new">Сначала новые</button>
+        <button type="button" class="seg" data-sort="old">Сначала старые</button>
+        <button type="button" class="seg" data-sort="alpha">По алфавиту</button>
+      </div>
+    </div>
+
+    <ul class="grid" id="grid"></ul>
+
+    <div class="empty" id="emptyState">
+      <div class="empty-art" aria-hidden="true">
+        <svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="14" y="22" width="30" height="36" rx="6"/>
+          <rect x="52" y="22" width="30" height="24" rx="6"/>
+          <rect x="52" y="54" width="30" height="20" rx="6"/>
+          <path d="M24 34h10M24 42h10"/>
+        </svg>
+      </div>
+      <p class="empty-title" id="emptyTitle">Пока пусто</p>
+      <p class="empty-text" id="emptyText">Создайте первый шаблон: название, описание и комментарий будут под рукой и скопируются одним нажатием.</p>
+      <button type="button" class="btn btn-primary" id="emptyCreate">Создать шаблон</button>
+    </div>
+  </main>
+
+  <footer class="statusbar">
+    <span class="dot" id="storageDot" aria-hidden="true"></span>
+    <span id="storageText">Всё хранится локально на этом компьютере</span>
+    <span class="statusbar-spacer"></span>
+    <button type="button" class="link-btn" id="exportBtn">Экспорт</button>
+    <button type="button" class="link-btn" id="importBtn">Импорт</button>
+    <input type="file" id="importFile" accept="application/json,.json" aria-label="Файл с шаблонами для импорта" hidden>
+  </footer>
+</div>
+
+<div class="overlay" id="detailOverlay" hidden>
+  <div class="modal detail" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <header class="modal-head">
+      <div>
+        <p class="modal-eyebrow">Шаблон</p>
+        <h2 id="detailTitle">Название</h2>
+        <p class="modal-meta" id="detailMeta"></p>
+      </div>
+      <button type="button" class="icon-btn" data-close aria-label="Закрыть">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+
+    <div class="detail-body" id="detailBody"></div>
+
+    <footer class="modal-foot">
+      <button type="button" class="btn btn-primary" id="detailCopyAll">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8h12v12H8z"/><path d="M4 16V4h12"/></svg>
+        Копировать всё
+      </button>
+      <button type="button" class="btn" id="detailEdit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        Изменить
+      </button>
+      <span class="modal-foot-spacer"></span>
+      <button type="button" class="btn btn-danger" id="detailDelete">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V5h6v2"/><path d="m6 7 1 13h10l1-13"/></svg>
+        Удалить
+      </button>
+    </footer>
+  </div>
+</div>
+
+<div class="overlay" id="editorOverlay" hidden>
+  <div class="modal editor" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
+    <header class="modal-head">
+      <div>
+        <p class="modal-eyebrow">Шаблон товара</p>
+        <h2 id="editorTitle">Новый шаблон</h2>
+      </div>
+      <button type="button" class="icon-btn" data-close aria-label="Закрыть">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+
+    <form id="itemForm" novalidate>
+      <div class="field">
+        <div class="field-row">
+          <label for="fTitle">Название товара</label>
+          <span class="counter" id="cTitle">0</span>
+        </div>
+        <input type="text" id="fTitle" name="title" placeholder="Например: Аккаунт Genshin Impact AR 55" autocomplete="off" maxlength="300">
+      </div>
+
+      <div class="field">
+        <div class="field-row">
+          <label for="fDescription">Описание для объявления</label>
+          <span class="counter" id="cDescription">0</span>
+        </div>
+        <textarea id="fDescription" name="description" rows="8" placeholder="Что входит, условия, гарантии — всё, что увидит покупатель."></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-row">
+          <label for="fComment">Комментарий</label>
+          <span class="counter" id="cComment">0</span>
+        </div>
+        <textarea id="fComment" name="comment" rows="3" placeholder="Заметка для себя: цена, у кого брали, что уточнить."></textarea>
+      </div>
+
+      <p class="form-error" id="formError" role="alert" hidden></p>
+    </form>
+
+    <footer class="modal-foot">
+      <button type="button" class="btn btn-primary" id="saveBtn">Сохранить</button>
+      <button type="button" class="btn btn-ghost" data-close>Отмена</button>
+      <span class="modal-foot-spacer"></span>
+      <span class="hint">Ctrl + Enter — сохранить</span>
+    </footer>
+  </div>
+</div>
+
+<div class="overlay" id="settingsOverlay" hidden>
+  <div class="modal settings" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <header class="modal-head">
+      <div>
+        <p class="modal-eyebrow">Внешний вид</p>
+        <h2 id="settingsTitle">Оформление</h2>
+      </div>
+      <button type="button" class="icon-btn" data-close aria-label="Закрыть">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+
+    <div class="settings-body">
+      <section class="setting-group">
+        <h3>Тема</h3>
+        <div class="theme-row" id="themeRow"></div>
+      </section>
+
+      <section class="setting-group">
+        <h3>Акцент</h3>
+        <div class="accent-row" id="accentRow"></div>
+        <div class="accent-custom">
+          <label class="color-pick" for="accentPicker">
+            <input type="color" id="accentPicker" value="#3ddc97" aria-label="Свой цвет акцента">
+            <span>Свой цвет</span>
+          </label>
+          <input type="text" id="accentHex" class="hex-input" spellcheck="false" autocomplete="off" placeholder="#3ddc97 или rgb(61, 220, 151)" aria-label="Код цвета акцента">
+        </div>
+        <p class="accent-rgb" id="accentRgb">RGB: 61, 220, 151</p>
+      </section>
+
+      <section class="setting-group">
+        <h3>Фон</h3>
+        <div class="bg-row" id="bgRow"></div>
+        <div class="bg-controls">
+          <label class="color-pick" for="bgColorPicker">
+            <input type="color" id="bgColorPicker" value="#0b1220" aria-label="Свой цвет фона">
+            <span>Свой цвет фона</span>
+          </label>
+          <input type="text" id="bgColorHex" class="hex-input" spellcheck="false" autocomplete="off" placeholder="#0b1220 или rgb(11, 18, 32)" aria-label="Код цвета фона">
+        </div>
+        <div class="bg-controls">
+          <label class="file-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0 4 4m-4-4L8 8"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+            Своё изображение
+            <input type="file" id="bgFile" accept="image/*" hidden>
+          </label>
+          <button type="button" class="btn btn-ghost btn-small" id="bgClear">Убрать фото</button>
+        </div>
+        <div class="slider-row">
+          <label for="bgDim">Затемнение фона</label>
+          <input type="range" id="bgDim" min="20" max="95" step="1" value="68">
+          <span class="slider-val" id="bgDimVal">68%</span>
+        </div>
+        <div class="slider-row">
+          <label for="bgBlur">Размытие фото</label>
+          <input type="range" id="bgBlur" min="0" max="24" step="1" value="8">
+          <span class="slider-val" id="bgBlurVal">8 px</span>
+        </div>
+      </section>
+
+      <section class="setting-group">
+        <h3>Движение</h3>
+        <label class="switch-row">
+          <span>Плавные анимации</span>
+          <input type="checkbox" id="animToggle" checked>
+          <span class="switch" aria-hidden="true"></span>
+        </label>
+      </section>
+
+      <section class="setting-group">
+        <h3>Данные</h3>
+        <div class="data-row">
+          <button type="button" class="btn btn-small" id="settingsExport">Экспорт в JSON</button>
+          <button type="button" class="btn btn-small" id="settingsImport">Импорт из JSON</button>
+          <button type="button" class="btn btn-small btn-danger" id="wipeBtn">Очистить всё</button>
+        </div>
+        <p class="setting-note">Шаблоны и настройки хранятся в этом приложении на компьютере. Экспорт нужен, чтобы перенести их на другой ПК.</p>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
